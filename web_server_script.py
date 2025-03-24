@@ -69,7 +69,7 @@ def open_socket(ip):
         print(f"Socket error: {e}")
         return None
 
-def webpage(temp, pressure):
+def webpage(reading):
     # HTML face
     html = f"""
             <!DOCTYPE html>
@@ -79,8 +79,8 @@ def webpage(temp, pressure):
             <meta http-equiv="refresh" content="5">
             </head>
             <body>
-            <p>Temperature: {temp:.2f} C</p>
-            <p>Atmospheric Pressure: {pressure:.2f} hPa</p>
+            <h1>Temperature and Pressure Reading</h1>
+            <p>{reading}</p>
             </body>
             </html>
             """
@@ -94,7 +94,8 @@ def server(connection):
             request = str(client.recv(1024))
             
             temp, pressure = sensor_reading()
-            html = webpage(temp, pressure)
+            reading = (f"Temperature: {temp} C | Pressure: {pressure} hPa")
+            html = webpage(reading)
             
             client.send('HTTP/1.1 200 OK\n')
             client.send('Content-Type: text/html\n')
